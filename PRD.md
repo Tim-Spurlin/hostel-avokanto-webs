@@ -53,6 +53,20 @@ A welcoming digital sanctuary showcasing Hostel Avokanto as a cultural solidarit
 - Progression: Platform selection (Booking.com, Hostelworld, Direct) → External booking flow
 - Success criteria: Clear booking pathways with price parity transparency
 
+**Live Availability Calendar with Direct Booking**
+- Functionality: Interactive calendar showing real-time room availability with direct booking capability
+- Purpose: Allow guests to check availability, select dates, and book directly through the website
+- Trigger: Navigate to booking calendar section
+- Progression: Select room type → Choose dates on calendar (blocked dates shown) → Enter guest details → Confirm booking → Success notification
+- Success criteria: Users can complete bookings, dates update in real-time, bookings persist across sessions
+
+**My Bookings Management Dashboard**
+- Functionality: View and manage all guest reservations with cancellation options
+- Purpose: Provide transparency and control over bookings with clear cancellation policies
+- Trigger: Scroll to bookings management section
+- Progression: View upcoming/active/past bookings → Review booking details → Cancel if within policy (72 hours) → Confirmation
+- Success criteria: Guests see all their bookings organized by status, understand cancellation windows
+
 ## Edge Case Handling
 
 - **Negative Review Concerns**: Include a dedicated "What to Expect" section that transparently addresses lack of AC, shared bathrooms, and historic building character

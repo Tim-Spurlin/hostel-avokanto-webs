@@ -3,6 +3,7 @@ import { Philosophy } from "@/components/Philosophy"
 import { Location } from "@/components/Location"
 import { Amenities } from "@/components/Amenities"
 import { Accommodations } from "@/components/Accommodations"
+import { BookingCalendar } from "@/components/BookingCalendar"
 import { BookingCTA } from "@/components/BookingCTA"
 import { Footer } from "@/components/Footer"
 
@@ -14,6 +15,7 @@ function App() {
       <Location />
       <Amenities />
       <Accommodations />
+      <BookingCalendar />
       <BookingCTA />
       <Footer />
     </div>
