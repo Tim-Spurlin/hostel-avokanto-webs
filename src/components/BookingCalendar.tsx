@@ -378,7 +378,5 @@ export function BookingCalendar() {
         </motion.div>
       </div>
     </section>
-          </ul>
-        </motion.div>
-      </div>
-    </section>
+  )
+}
