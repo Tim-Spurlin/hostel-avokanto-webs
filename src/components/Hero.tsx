@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { MapPin, ArrowRight } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 import { useLanguage } from "@/contexts/LanguageContext"
-import { t } from "@/lib/i18n"
+import { t } from "@/lib/i18n-new"
 
 export function Hero() {
   const { language } = useLanguage()

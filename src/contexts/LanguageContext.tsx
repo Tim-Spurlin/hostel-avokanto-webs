@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react'
 import { useKV } from '@github/spark/hooks'
-import { LanguageCode, CurrencyCode } from '@/lib/i18n'
+import { LanguageCode, CurrencyCode } from '@/lib/i18n-new'
 
 interface LanguageContextType {
   language: LanguageCode

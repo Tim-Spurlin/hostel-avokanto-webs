@@ -2,23 +2,27 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Umbrella, Buildings, Bus, Airplane } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/LanguageContext"
+import { t } from "@/lib/i18n-new"
 
 export function Location() {
+  const { language } = useLanguage()
+  
   const landmarks = [
-    { name: "Ramirez Beach", distance: "6-minute walk", icon: Umbrella, color: "text-secondary" },
-    { name: "Downtown Center", distance: "1.1 miles", icon: Buildings, color: "text-primary" },
-    { name: "Tres Cruces Terminal", distance: "2.0 km", icon: Bus, color: "text-accent" },
-    { name: "Carrasco Airport", distance: "11 miles", icon: Airplane, color: "text-muted-foreground" },
+    { name: t('location.ramirezBeach', language), distance: t('location.distance.6min', language), icon: Umbrella, color: "text-secondary" },
+    { name: t('location.downtownCenter', language), distance: t('location.distance.1.1miles', language), icon: Buildings, color: "text-primary" },
+    { name: t('location.tresCruces', language), distance: t('location.distance.2km', language), icon: Bus, color: "text-accent" },
+    { name: t('location.airport', language), distance: t('location.distance.11miles', language), icon: Airplane, color: "text-muted-foreground" },
   ]
 
   const nearby = [
-    "Weekly Street Market (Wednesdays)",
-    "Teatro de Verano",
-    "National Library of Uruguay",
-    "Pocito's Avenue",
-    "Salvo's Palace",
-    "Independencia Square",
-    "Montevideo Harbour"
+    t('location.nearby.market', language),
+    t('location.nearby.teatro', language),
+    t('location.nearby.library', language),
+    t('location.nearby.pocitos', language),
+    t('location.nearby.salvo', language),
+    t('location.nearby.plaza', language),
+    t('location.nearby.harbour', language),
   ]
 
   return (
@@ -32,13 +36,13 @@ export function Location() {
           transition={{ duration: 0.6 }}
         >
           <Badge className="mb-4 bg-secondary text-secondary-foreground text-sm px-4 py-1">
-            Rated 8.6/10 for Location
+            {t('location.badge', language)}
           </Badge>
           <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-foreground">
-            Perfectly Positioned in Parque Rodó
+            {t('location.title', language)}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Walk to the beach in minutes, explore vibrant markets at your doorstep, and access all of Montevideo with ease from Uruguay's most eclectic neighborhood.
+            {t('location.subtitle', language)}
           </p>
         </motion.div>
 
@@ -70,15 +74,15 @@ export function Location() {
             <div className="flex items-start gap-4 mb-6">
               <MapPin size={40} weight="fill" className="text-primary flex-shrink-0" />
               <div>
-                <h3 className="text-2xl font-semibold mb-2">2077 San Salvador, Parque Rodó</h3>
+                <h3 className="text-2xl font-semibold mb-2">{t('location.address', language)}</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Parque Rodó is Montevideo's most vibrant, culturally dense neighborhood—a bohemian enclave balancing residential tranquility with thriving artistic energy. Tree-lined walkable streets, historic architecture, and immediate coastal access make this the perfect base for authentic exploration.
+                  {t('location.description', language)}
                 </p>
               </div>
             </div>
 
             <div className="border-t border-border pt-6 mt-6">
-              <h4 className="font-semibold text-lg mb-4">Nearby Attractions</h4>
+              <h4 className="font-semibold text-lg mb-4">{t('location.nearby.title', language)}</h4>
               <div className="flex flex-wrap gap-2">
                 {nearby.map((place) => (
                   <Badge key={place} variant="outline" className="text-sm">

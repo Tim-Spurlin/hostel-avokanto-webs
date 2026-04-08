@@ -1,48 +1,52 @@
 import { Card } from "@/components/ui/card"
 import { WifiHigh, CookingPot, Users, Sun, Plant, Fire } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/LanguageContext"
+import { t } from "@/lib/i18n-new"
 
 export function Amenities() {
+  const { language } = useLanguage()
+  
   const features = [
     {
       icon: WifiHigh,
-      title: "Blazing-Fast WiFi",
-      description: "500+ Mbps speeds supporting 10+ devices—perfect for digital nomads and remote work.",
+      titleKey: 'amenities.wifi.title',
+      descriptionKey: 'amenities.wifi.description',
       color: "text-secondary",
       bgColor: "bg-secondary/10"
     },
     {
       icon: CookingPot,
-      title: "South America's Best Kitchen",
-      description: "Massive, fully-equipped kitchen with daily staff-cooked meals. Steps from Wednesday street market.",
+      titleKey: 'amenities.kitchen.title',
+      descriptionKey: 'amenities.kitchen.description',
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
     {
       icon: Plant,
-      title: "Lush Garden Sanctuary",
-      description: "Beautiful outdoor garden, sun terrace, picnic areas, and authentic Uruguayan BBQ facilities.",
+      titleKey: 'amenities.garden.title',
+      descriptionKey: 'amenities.garden.description',
       color: "text-[oklch(0.60_0.14_150)]",
       bgColor: "bg-[oklch(0.60_0.14_150)]/10"
     },
     {
       icon: Users,
-      title: "Vibrant Community",
-      description: "Game room, shared lounge, live entertainment. Learn Spanish, make lifelong friends.",
+      titleKey: 'amenities.community.title',
+      descriptionKey: 'amenities.community.description',
       color: "text-accent",
       bgColor: "bg-accent/10"
     },
     {
       icon: Sun,
-      title: "24/7 Hospitality",
-      description: "Round-the-clock reception, security, and support. No curfew—explore Montevideo freely.",
+      titleKey: 'amenities.hospitality.title',
+      descriptionKey: 'amenities.hospitality.description',
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
     {
       icon: Fire,
-      title: "Free Daily Breakfast",
-      description: "Authentic local Uruguayan breakfast included. Optional staff-prepared dinners available.",
+      titleKey: 'amenities.breakfast.title',
+      descriptionKey: 'amenities.breakfast.description',
       color: "text-accent",
       bgColor: "bg-accent/10"
     }
@@ -59,17 +63,17 @@ export function Amenities() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-foreground">
-            Exceptional Amenities
+            {t('amenities.title', language)}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            At just $11/night, we deliver connectivity, community, and comfort that rivals properties charging triple the price.
+            {t('amenities.subtitle', language)}
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <motion.div
-              key={feature.title}
+              key={feature.titleKey}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -79,8 +83,8 @@ export function Amenities() {
                 <div className={`w-16 h-16 rounded-xl ${feature.bgColor} flex items-center justify-center mb-6`}>
                   <feature.icon size={32} weight="fill" className={feature.color} />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-3">{t(feature.titleKey, language)}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t(feature.descriptionKey, language)}</p>
               </Card>
             </motion.div>
           ))}

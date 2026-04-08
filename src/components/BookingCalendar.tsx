@@ -11,7 +11,7 @@ import { format, addDays, differenceInDays, isAfter, isBefore, startOfDay } from
 import { DateRange } from "react-day-picker"
 import { toast } from "sonner"
 import { useLanguage } from "@/contexts/LanguageContext"
-import { t, formatCurrency } from "@/lib/i18n"
+import { t, formatCurrency } from "@/lib/i18n-new"
 
 interface RoomType {
   id: string

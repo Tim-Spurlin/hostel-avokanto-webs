@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import { Heart, MapPin, Envelope } from "@phosphor-icons/react"
 import { useLanguage } from "@/contexts/LanguageContext"
-import { t } from "@/lib/i18n"
+import { t } from "@/lib/i18n-new"
 
 export function Footer() {
   const { language } = useLanguage()

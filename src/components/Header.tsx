@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Globe, CurrencyDollar } from "@phosphor-icons/react"
 import { useLanguage } from "@/contexts/LanguageContext"
-import { LANGUAGES, CURRENCIES } from "@/lib/i18n"
+import { LANGUAGES, CURRENCIES } from "@/lib/i18n-new"
 
 export function Header() {
   const { language, setLanguage, currency, setCurrency } = useLanguage()

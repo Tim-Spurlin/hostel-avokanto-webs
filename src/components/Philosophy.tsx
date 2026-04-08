@@ -1,8 +1,12 @@
 import { Card } from "@/components/ui/card"
 import { Heart, Users, CookingPot } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/LanguageContext"
+import { t } from "@/lib/i18n-new"
 
 export function Philosophy() {
+  const { language } = useLanguage()
+  
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -15,10 +19,10 @@ export function Philosophy() {
       <div className="max-w-7xl mx-auto">
         <motion.div className="text-center mb-16" {...fadeInUp}>
           <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-foreground">
-            The Avokanto Philosophy
+            {t('philosophy.title', language)}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Our name comes from the Greek concept of <em>avokanto</em>—a solidarity haven where all are welcomed and cared for without prejudice. Born from community-driven sanctuaries during Greece's crisis, these spaces offered unconditional shelter, care, and human dignity.
+            {t('philosophy.subtitle', language)}
           </p>
         </motion.div>
 
@@ -26,9 +30,9 @@ export function Philosophy() {
           <motion.div {...fadeInUp} transition={{ delay: 0.1, duration: 0.6 }}>
             <Card className="p-8 h-full hover:shadow-lg transition-shadow border-l-4 border-l-accent">
               <Heart size={48} weight="fill" className="text-accent mb-4" />
-              <h3 className="text-2xl font-semibold mb-4">Unconditional Welcome</h3>
+              <h3 className="text-2xl font-semibold mb-4">{t('philosophy.unconditional.title', language)}</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Every traveler, regardless of origin or background, finds genuine hospitality and respect at Avokanto. We're a sanctuary for wanderers seeking authentic connection.
+                {t('philosophy.unconditional.description', language)}
               </p>
             </Card>
           </motion.div>
@@ -36,9 +40,9 @@ export function Philosophy() {
           <motion.div {...fadeInUp} transition={{ delay: 0.2, duration: 0.6 }}>
             <Card className="p-8 h-full hover:shadow-lg transition-shadow border-l-4 border-l-secondary">
               <Users size={48} weight="fill" className="text-secondary mb-4" />
-              <h3 className="text-2xl font-semibold mb-4">Community First</h3>
+              <h3 className="text-2xl font-semibold mb-4">{t('philosophy.community.title', language)}</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Our lush garden and shared spaces aren't just amenities—they're the heart of a global community. Learn Spanish, share stories, make lifelong friends.
+                {t('philosophy.community.description', language)}
               </p>
             </Card>
           </motion.div>
@@ -46,9 +50,9 @@ export function Philosophy() {
           <motion.div {...fadeInUp} transition={{ delay: 0.3, duration: 0.6 }}>
             <Card className="p-8 h-full hover:shadow-lg transition-shadow border-l-4 border-l-primary">
               <CookingPot size={48} weight="fill" className="text-primary mb-4" />
-              <h3 className="text-2xl font-semibold mb-4">Shared Care</h3>
+              <h3 className="text-2xl font-semibold mb-4">{t('philosophy.care.title', language)}</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Our staff cooks daily family dinners. Our kitchen—praised as South America's best—lets you prepare fresh market finds. Food brings us together.
+                {t('philosophy.care.description', language)}
               </p>
             </Card>
           </motion.div>
@@ -60,7 +64,7 @@ export function Philosophy() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <p className="text-lg md:text-xl italic text-foreground leading-relaxed max-w-4xl mx-auto">
-            "Named after the Greek solidarity clinics, Avokanto is more than a hostel—it's a community shelter in the heart of Parque Rodó. Here, budget travelers discover warmth, unconditional welcome, and a genuine home in Montevideo."
+            {t('philosophy.quote', language)}
           </p>
         </motion.div>
       </div>
