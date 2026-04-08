@@ -3,24 +3,24 @@ import { MapPin, ArrowRight } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { t } from "@/lib/i18n-new"
+import heroVideo from "@/assets/video/grok-video-6dd4813e-c21b-4df0-b189-4caa82691fb7_1775677438.mp4"
 
 export function Hero() {
   const { language } = useLanguage()
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `linear-gradient(135deg, oklch(0.60 0.14 150) 0%, oklch(0.55 0.12 200) 100%)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
       >
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)`
-        }} />
-      </div>
+        <source src={heroVideo} type="video/mp4" />
+      </video>
+      
+      <div className="absolute inset-0 bg-black/40 z-0" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
         <motion.div
