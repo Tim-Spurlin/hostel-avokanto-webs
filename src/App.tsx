@@ -1,3 +1,5 @@
+import { LanguageProvider } from "@/contexts/LanguageContext"
+import { Header } from "@/components/Header"
 import { Hero } from "@/components/Hero"
 import { Philosophy } from "@/components/Philosophy"
 import { Location } from "@/components/Location"
@@ -9,16 +11,19 @@ import { Footer } from "@/components/Footer"
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <Hero />
-      <Philosophy />
-      <Location />
-      <Amenities />
-      <Accommodations />
-      <BookingCalendar />
-      <BookingCTA />
-      <Footer />
-    </div>
+    <LanguageProvider>
+      <div className="min-h-screen">
+        <Header />
+        <Hero />
+        <Philosophy />
+        <Location />
+        <Amenities />
+        <Accommodations />
+        <BookingCalendar />
+        <BookingCTA />
+        <Footer />
+      </div>
+    </LanguageProvider>
   )
 }
 

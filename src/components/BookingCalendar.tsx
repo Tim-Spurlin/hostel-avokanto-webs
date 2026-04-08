@@ -10,6 +10,8 @@ import { motion } from "framer-motion"
 import { format, addDays, differenceInDays, isAfter, isBefore, startOfDay } from "date-fns"
 import { DateRange } from "react-day-picker"
 import { toast } from "sonner"
+import { useLanguage } from "@/contexts/LanguageContext"
+import { t, formatCurrency } from "@/lib/i18n"
 
 interface RoomType {
   id: string
@@ -73,6 +75,7 @@ const ROOM_TYPES: RoomType[] = [
 ]
 
 export function BookingCalendar() {
+  const { language, currency } = useLanguage()
   const [selectedRoom, setSelectedRoom] = useState<RoomType>(ROOM_TYPES[0])
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
   const [guestCount, setGuestCount] = useState(1)
@@ -103,23 +106,23 @@ export function BookingCalendar() {
 
   const handleBooking = () => {
     if (!dateRange?.from || !dateRange?.to) {
-      toast.error("Please select check-in and check-out dates")
+      toast.error(t('toast.selectDates', language))
       return
     }
 
     if (!guestName || !guestEmail) {
-      toast.error("Please provide your name and email")
+      toast.error(t('toast.provideDetails', language))
       return
     }
 
     if (guestCount < 1 || guestCount > selectedRoom.capacity) {
-      toast.error(`Guest count must be between 1 and ${selectedRoom.capacity}`)
+      toast.error(t('toast.invalidGuestCount', language, { max: selectedRoom.capacity.toString() }))
       return
     }
 
     const nights = differenceInDays(dateRange.to, dateRange.from)
     if (nights < 1) {
-      toast.error("Minimum stay is 1 night")
+      toast.error(t('toast.minimumStay', language))
       return
     }
 
@@ -137,8 +140,9 @@ export function BookingCalendar() {
 
     setBookings((currentBookings) => [...(currentBookings || []), newBooking])
     
-    toast.success("Booking confirmed!", {
-      description: `${nights} night(s) in ${selectedRoom.name} - Total: $${newBooking.totalPrice}`
+    const nightsWord = nights === 1 ? t('night', language) : t('nights', language)
+    toast.success(t('toast.bookingConfirmed', language), {
+      description: `${nights} ${nightsWord} ${selectedRoom.name} - ${t('booking.total', language)} ${formatCurrency(newBooking.totalPrice, currency)}`
     })
 
     setDateRange(undefined)
@@ -160,9 +164,9 @@ export function BookingCalendar() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-semibold mb-4">Book Your Stay</h2>
+          <h2 className="text-4xl md:text-5xl font-semibold mb-4">{t('booking.title', language)}</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Check real-time availability and reserve your spot at our solidarity haven
+            {t('booking.subtitle', language)}
           </p>
         </motion.div>
 
@@ -172,9 +176,9 @@ export function BookingCalendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Bed size={24} weight="duotone" className="text-primary" />
-                  Select Your Room
+                  {t('booking.selectRoom', language)}
                 </CardTitle>
-                <CardDescription>Choose from private rooms or social dormitories</CardDescription>
+                <CardDescription>{t('booking.selectRoom.description', language)}</CardDescription>
               </CardHeader>
               <CardContent>
                 <Tabs value={selectedRoom.id} onValueChange={(value) => {
@@ -199,15 +203,15 @@ export function BookingCalendar() {
                             <p className="text-muted-foreground mb-4">{room.description}</p>
                           </div>
                           <div className="text-right">
-                            <div className="text-3xl font-bold text-primary">${room.price}</div>
-                            <div className="text-sm text-muted-foreground">per night</div>
+                            <div className="text-3xl font-bold text-primary">{formatCurrency(room.price, currency)}</div>
+                            <div className="text-sm text-muted-foreground">{t('perNight', language)}</div>
                           </div>
                         </div>
 
                         <div className="flex flex-wrap gap-2">
                           <Badge variant="secondary" className="flex items-center gap-1">
                             <Users size={14} weight="fill" />
-                            Up to {room.capacity} guests
+                            {t('booking.maxGuests', language, { count: room.capacity.toString() })}
                           </Badge>
                           {room.features.map((feature, idx) => (
                             <Badge key={idx} variant="outline">{feature}</Badge>
@@ -224,9 +228,9 @@ export function BookingCalendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CalendarBlank size={24} weight="duotone" className="text-primary" />
-                  Select Dates
+                  {t('booking.selectDates', language)}
                 </CardTitle>
-                <CardDescription>Choose your check-in and check-out dates</CardDescription>
+                <CardDescription>{t('booking.selectDates.description', language)}</CardDescription>
               </CardHeader>
               <CardContent>
                 <Calendar
@@ -249,16 +253,16 @@ export function BookingCalendar() {
                     className="mt-6 p-4 bg-muted rounded-lg"
                   >
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">Check-in:</span>
+                      <span className="text-sm font-medium">{t('booking.checkIn', language)}</span>
                       <span className="text-sm">{format(dateRange.from, "MMMM d, yyyy")}</span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">Check-out:</span>
+                      <span className="text-sm font-medium">{t('booking.checkOut', language)}</span>
                       <span className="text-sm">{format(dateRange.to, "MMMM d, yyyy")}</span>
                     </div>
                     <div className="flex justify-between items-center font-semibold">
-                      <span className="text-sm">Total nights:</span>
-                      <span className="text-sm">{nights} {nights === 1 ? "night" : "nights"}</span>
+                      <span className="text-sm">{t('booking.totalNights', language)}</span>
+                      <span className="text-sm">{nights} {nights === 1 ? t('night', language) : t('nights', language)}</span>
                     </div>
                   </motion.div>
                 )}
@@ -269,12 +273,12 @@ export function BookingCalendar() {
           <div className="lg:col-span-1">
             <Card className="sticky top-6">
               <CardHeader>
-                <CardTitle>Booking Summary</CardTitle>
+                <CardTitle>{t('booking.summary', language)}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <label htmlFor="guestName" className="text-sm font-medium mb-2 block">
-                    Your Name *
+                    {t('booking.yourName', language)} *
                   </label>
                   <input
                     id="guestName"
@@ -288,7 +292,7 @@ export function BookingCalendar() {
 
                 <div>
                   <label htmlFor="guestEmail" className="text-sm font-medium mb-2 block">
-                    Email Address *
+                    {t('booking.email', language)} *
                   </label>
                   <input
                     id="guestEmail"
@@ -302,7 +306,7 @@ export function BookingCalendar() {
 
                 <div>
                   <label htmlFor="guestCount" className="text-sm font-medium mb-2 block">
-                    Number of Guests
+                    {t('booking.guestCount', language)}
                   </label>
                   <input
                     id="guestCount"
@@ -314,28 +318,28 @@ export function BookingCalendar() {
                     className="w-full px-3 py-2 border border-input rounded-md bg-background"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    Max {selectedRoom.capacity} guests
+                    {t('booking.maxGuests', language, { count: selectedRoom.capacity.toString() })}
                   </p>
                 </div>
 
                 <div className="pt-4 border-t space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Room type:</span>
+                    <span className="text-muted-foreground">{t('booking.roomType', language)}</span>
                     <span className="font-medium">{selectedRoom.name}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Rate:</span>
-                    <span className="font-medium">${selectedRoom.price}/night</span>
+                    <span className="text-muted-foreground">{t('booking.rate', language)}</span>
+                    <span className="font-medium">{formatCurrency(selectedRoom.price, currency)}/{t('night', language)}</span>
                   </div>
                   {nights > 0 && (
                     <>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Nights:</span>
+                        <span className="text-muted-foreground">{t('booking.totalNights', language)}</span>
                         <span className="font-medium">{nights}</span>
                       </div>
                       <div className="flex justify-between text-lg font-bold pt-2 border-t">
-                        <span>Total:</span>
-                        <span className="text-primary">${totalPrice}</span>
+                        <span>{t('booking.total', language)}</span>
+                        <span className="text-primary">{formatCurrency(totalPrice, currency)}</span>
                       </div>
                     </>
                   )}
@@ -348,11 +352,11 @@ export function BookingCalendar() {
                   size="lg"
                 >
                   <CheckCircle size={20} className="mr-2" weight="bold" />
-                  Confirm Booking
+                  {t('booking.confirm', language)}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  Free cancellation up to 72 hours before arrival. Cash payment upon check-in.
+                  {t('booking.cancellationPolicy', language)}
                 </p>
               </CardContent>
             </Card>
@@ -366,14 +370,14 @@ export function BookingCalendar() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-12 p-6 bg-muted rounded-lg"
         >
-          <h3 className="font-semibold text-lg mb-3">Important Information</h3>
+          <h3 className="font-semibold text-lg mb-3">{t('booking.info.title', language)}</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>• Check-in: 2:00 PM - 11:00 PM (24-hour reception available)</li>
-            <li>• Check-out: Before 11:00 AM</li>
-            <li>• Cash payment only upon arrival (all local taxes included)</li>
-            <li>• 72-hour advance notice required for free cancellation</li>
-            <li>• Historic building with fan ventilation (no AC) - perfect for eco-conscious travelers</li>
-            <li>• Shared bathroom facilities (3 bathrooms) - please plan accordingly during peak hours</li>
+            <li>• {t('booking.info.checkIn', language)}</li>
+            <li>• {t('booking.info.checkOut', language)}</li>
+            <li>• {t('booking.info.payment', language)}</li>
+            <li>• {t('booking.info.cancellation', language)}</li>
+            <li>• {t('booking.info.ventilation', language)}</li>
+            <li>• {t('booking.info.bathrooms', language)}</li>
           </ul>
         </motion.div>
       </div>

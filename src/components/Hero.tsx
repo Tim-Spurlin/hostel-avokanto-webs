@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { MapPin, ArrowRight } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/LanguageContext"
+import { t } from "@/lib/i18n"
 
 export function Hero() {
+  const { language } = useLanguage()
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div 
@@ -25,18 +29,18 @@ export function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <h1 className="text-5xl md:text-7xl font-semibold mb-6 leading-tight">
-            Welcome to Avokanto
+            {t('hero.title', language)}
           </h1>
           <p className="text-xl md:text-2xl mb-4 font-light max-w-3xl mx-auto leading-relaxed">
-            A Solidarity Haven in Montevideo's Heart
+            {t('hero.subtitle', language)}
           </p>
           <p className="text-lg md:text-xl mb-12 opacity-90 max-w-2xl mx-auto">
-            More than a hostel—a community sanctuary where travelers from all origins find warmth, unconditional welcome, and a true home in Parque Rodó.
+            {t('hero.description', language)}
           </p>
           
           <div className="flex items-center justify-center gap-2 mb-12 text-lg">
             <MapPin size={24} weight="fill" />
-            <span>6-minute walk to the beach • Heart of Parque Rodó</span>
+            <span>{t('hero.location', language)}</span>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -44,7 +48,7 @@ export function Hero() {
               size="lg" 
               className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 transition-all hover:scale-105"
             >
-              Book Your Stay
+              {t('hero.bookStay', language)}
               <ArrowRight size={20} className="ml-2" weight="bold" />
             </Button>
             <Button 
@@ -52,7 +56,7 @@ export function Hero() {
               variant="outline" 
               className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-lg px-8 py-6 backdrop-blur-sm"
             >
-              Explore Our Story
+              {t('hero.exploreStory', language)}
             </Button>
           </div>
         </motion.div>
