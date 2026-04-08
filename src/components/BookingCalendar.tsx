@@ -380,5 +380,3 @@ export function BookingCalendar() {
     </section>
   )
 }
-  )
-}
