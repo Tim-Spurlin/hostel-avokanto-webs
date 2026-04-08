@@ -372,15 +372,13 @@ export function BookingCalendar() {
         >
           <h3 className="font-semibold text-lg mb-3">{t('booking.info.title', language)}</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>• {t('booking.info.checkIn', language)}</li>
-            <li>• {t('booking.info.checkOut', language)}</li>
-            <li>• {t('booking.info.payment', language)}</li>
-            <li>• {t('booking.info.cancellation', language)}</li>
             <li>• {t('booking.info.ventilation', language)}</li>
             <li>• {t('booking.info.bathrooms', language)}</li>
           </ul>
         </motion.div>
       </div>
     </section>
-  )
-}
+          </ul>
+        </motion.div>
+      </div>
+    </section>
