@@ -166,6 +166,11 @@ body::after {
   pointer-events: none;
   z-index: 0;
   will-change: background-position;
+  transition: opacity 0.3s ease;
+}
+
+.pattern-hover-active::after {
+  opacity: 0.7;
 }
 
 body::before {
@@ -198,6 +203,11 @@ body::before {
   pointer-events: none;
   z-index: 1;
   will-change: background-position;
+  transition: opacity 0.3s ease;
+}
+
+.pattern-hover-active::before {
+  opacity: 0.5;
 }
 
 #root {
@@ -232,4 +242,81 @@ body::before {
   --radius-xl: calc(var(--radius) * 2);
   --radius-2xl: calc(var(--radius) * 3);
   --radius-full: 9999px;
+}
+
+.card-hover-effect {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover-effect::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    oklch(0.70 0.18 25 / 0.3),
+    oklch(0.60 0.14 150 / 0.3),
+    oklch(0.55 0.12 200 / 0.3)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.card-hover-effect:hover::before {
+  opacity: 1;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-4px);
+}
+
+.pattern-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.pattern-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    oklch(0.70 0.18 25 / 0.4) 0%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+}
+
+.pattern-ripple:hover::after {
+  width: 300px;
+  height: 300px;
+  opacity: 1;
+}
+
+@keyframes pattern-pulse {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.pattern-pulse-hover {
+  background-size: 200% 200%;
+  transition: background-position 0.8s ease;
+}
+
+.pattern-pulse-hover:hover {
+  animation: pattern-pulse 2s ease infinite;
 }

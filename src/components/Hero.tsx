@@ -46,7 +46,7 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 transition-all hover:scale-105"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 transition-all hover:scale-105 pattern-ripple"
             >
               {t('hero.bookStay', language)}
               <ArrowRight size={20} className="ml-2" weight="bold" />
@@ -54,7 +54,7 @@ export function Hero() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-lg px-8 py-6 backdrop-blur-sm"
+              className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-lg px-8 py-6 backdrop-blur-sm pattern-ripple"
             >
               {t('hero.exploreStory', language)}
             </Button>

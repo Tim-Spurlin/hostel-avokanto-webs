@@ -29,7 +29,7 @@ export function Philosophy() {
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <motion.div {...fadeInUp} transition={{ delay: 0.1, duration: 0.6 }}>
-            <Card className="p-8 h-full hover:shadow-lg transition-shadow border-l-4 border-l-accent">
+            <Card className="p-8 h-full card-hover-effect pattern-ripple border-l-4 border-l-accent">
               <Heart size={48} weight="fill" className="text-accent mb-4" />
               <h3 className="text-2xl font-semibold mb-4">{t('philosophy.unconditional.title', language)}</h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -39,7 +39,7 @@ export function Philosophy() {
           </motion.div>
 
           <motion.div {...fadeInUp} transition={{ delay: 0.2, duration: 0.6 }}>
-            <Card className="p-8 h-full hover:shadow-lg transition-shadow border-l-4 border-l-secondary">
+            <Card className="p-8 h-full card-hover-effect pattern-ripple border-l-4 border-l-secondary">
               <Users size={48} weight="fill" className="text-secondary mb-4" />
               <h3 className="text-2xl font-semibold mb-4">{t('philosophy.community.title', language)}</h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -49,7 +49,7 @@ export function Philosophy() {
           </motion.div>
 
           <motion.div {...fadeInUp} transition={{ delay: 0.3, duration: 0.6 }}>
-            <Card className="p-8 h-full hover:shadow-lg transition-shadow border-l-4 border-l-primary">
+            <Card className="p-8 h-full card-hover-effect pattern-ripple border-l-4 border-l-primary">
               <CookingPot size={48} weight="fill" className="text-primary mb-4" />
               <h3 className="text-2xl font-semibold mb-4">{t('philosophy.care.title', language)}</h3>
               <p className="text-muted-foreground leading-relaxed">

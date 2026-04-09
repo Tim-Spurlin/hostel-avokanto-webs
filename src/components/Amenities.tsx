@@ -79,8 +79,8 @@ export function Amenities() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="p-8 h-full hover:shadow-xl transition-all hover:scale-105">
-                <div className={`w-16 h-16 rounded-xl ${feature.bgColor} flex items-center justify-center mb-6`}>
+              <Card className="p-8 h-full card-hover-effect pattern-ripple">
+                <div className={`w-16 h-16 rounded-xl ${feature.bgColor} flex items-center justify-center mb-6 transition-transform hover:scale-110`}>
                   <feature.icon size={32} weight="fill" className={feature.color} />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{t(feature.titleKey, language)}</h3>

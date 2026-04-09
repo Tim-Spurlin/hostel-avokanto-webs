@@ -24,12 +24,12 @@ export function BookingCTA() {
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 mb-8">
-            <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20">
+            <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 pattern-ripple">
               <h3 className="font-semibold text-lg mb-2">{t('bookingCTA.checkIn.title', language)}</h3>
               <p className="opacity-90">{t('bookingCTA.checkIn.time', language)}</p>
               <p className="text-sm opacity-75 mt-1">{t('bookingCTA.checkIn.note', language)}</p>
             </Card>
-            <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20">
+            <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 pattern-ripple">
               <h3 className="font-semibold text-lg mb-2">{t('bookingCTA.checkOut.title', language)}</h3>
               <p className="opacity-90">{t('bookingCTA.checkOut.time', language)}</p>
               <p className="text-sm opacity-75 mt-1">{t('bookingCTA.checkOut.note', language)}</p>
@@ -39,7 +39,7 @@ export function BookingCTA() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 transition-all hover:scale-105"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 transition-all hover:scale-105 pattern-ripple"
             >
               {t('bookingCTA.bookingCom', language)}
               <ArrowRight size={20} className="ml-2" weight="bold" />
@@ -47,7 +47,7 @@ export function BookingCTA() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-lg px-8 py-6 backdrop-blur-sm"
+              className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-lg px-8 py-6 backdrop-blur-sm pattern-ripple"
             >
               {t('bookingCTA.hostelworld', language)}
               <ArrowRight size={20} className="ml-2" weight="bold" />

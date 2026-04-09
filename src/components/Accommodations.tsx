@@ -72,9 +72,9 @@ export function Accommodations() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                <Card className="p-8 md:p-12 max-w-4xl mx-auto">
+                <Card className="p-8 md:p-12 max-w-4xl mx-auto card-hover-effect">
                   <div className="flex items-start gap-6 mb-6">
-                    <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 transition-transform hover:scale-110">
                       <room.icon size={32} weight="fill" className="text-primary" />
                     </div>
                     <div className="flex-1">
@@ -96,7 +96,7 @@ export function Accommodations() {
                     ))}
                   </div>
 
-                  <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                  <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground pattern-ripple">
                     {t('common.bookThisRoom', language)}
                   </Button>
                 </Card>
