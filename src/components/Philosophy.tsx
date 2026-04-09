@@ -71,6 +71,7 @@ export function Philosophy() {
               loop
               muted
               playsInline
+              preload="auto"
               className="w-full h-auto"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent pointer-events-none" />
