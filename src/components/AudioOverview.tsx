@@ -289,10 +289,9 @@ export default function AudioOverview() {
           <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
             <div className="relative flex-shrink-0">
               <div
-                className="absolute inset-0 w-28 h-28 md:w-36 md:h-36 -translate-x-6 -translate-y-6 md:-translate-x-8 md:-translate-y-8"
+                className="absolute inset-0 w-28 h-28 md:w-36 md:h-36 -translate-x-6 -translate-y-6 md:-translate-x-8 md:-translate-y-8 transition-transform duration-75"
                 style={{
-                  transform: playing ? `translate(-1.5rem, -1.5rem) rotate(${(currentTime * 30) % 360}deg)` : 'translate(-1.5rem, -1.5rem) rotate(0deg)',
-                  transition: playing ? 'none' : 'transform 0.5s ease-out',
+                  transform: `translate(-1.5rem, -1.5rem) rotate(${playing ? (currentTime * 30) % 360 : 0}deg)`,
                 }}
               >
                 <svg
