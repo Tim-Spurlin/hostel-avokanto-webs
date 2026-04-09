@@ -287,35 +287,92 @@ export default function AudioOverview() {
           onMouseLeave={() => setIsHovering(false)}
         >
           <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
-            <button
-              onClick={togglePlay}
-              disabled={!loaded}
-              className={`
-                w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center flex-shrink-0
-                transition-all duration-300 shadow-lg
-                ${loaded
-                  ? "bg-primary hover:bg-accent hover:scale-105 active:scale-95"
-                  : "bg-muted cursor-not-allowed"
-                }
-              `}
-              aria-label={playing ? "Pause" : "Play"}
-            >
-              {!loaded ? (
-                <svg className="w-6 h-6 md:w-7 md:h-7 animate-spin text-primary-foreground" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
-                </svg>
-              ) : playing ? (
-                <svg className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="6" y="4" width="4" height="16" rx="1"/>
-                  <rect x="14" y="4" width="4" height="16" rx="1"/>
-                </svg>
-              ) : (
-                <svg className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground ml-1" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5.14v14l11-7-11-7z"/>
-                </svg>
-              )}
-            </button>
+            <div className="relative flex-shrink-0">
+              <svg
+                className="absolute inset-0 w-28 h-28 md:w-36 md:h-36 -translate-x-6 -translate-y-6 md:-translate-x-8 md:-translate-y-8"
+                viewBox="0 0 200 200"
+              >
+                <defs>
+                  <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="oklch(0.70 0.18 25)" stopOpacity="0.8" />
+                    <stop offset="50%" stopColor="oklch(0.65 0.15 35)" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="oklch(0.60 0.14 150)" stopOpacity="0.4" />
+                  </linearGradient>
+                </defs>
+                {Array.from({ length: 48 }).map((_, i) => {
+                  const totalBars = 48;
+                  const angle = (i / totalBars) * 360;
+                  const baseRadius = 70;
+                  const maxExtension = 25;
+                  
+                  const dataIndex = Math.floor((i / totalBars) * BAR_COUNT);
+                  const intensity = frequencyData[dataIndex] || 0;
+                  
+                  const extension = playing 
+                    ? intensity * maxExtension
+                    : (Math.sin(i * 0.3 + Date.now() / 1000) * 3 + 3);
+                  
+                  const innerRadius = baseRadius;
+                  const outerRadius = baseRadius + extension;
+                  
+                  const x1 = 100 + innerRadius * Math.cos((angle - 90) * Math.PI / 180);
+                  const y1 = 100 + innerRadius * Math.sin((angle - 90) * Math.PI / 180);
+                  const x2 = 100 + outerRadius * Math.cos((angle - 90) * Math.PI / 180);
+                  const y2 = 100 + outerRadius * Math.sin((angle - 90) * Math.PI / 180);
+                  
+                  const activeAngle = (progress / 100) * 360;
+                  const isActive = angle <= activeAngle;
+                  
+                  return (
+                    <line
+                      key={i}
+                      x1={x1}
+                      y1={y1}
+                      x2={x2}
+                      y2={y2}
+                      stroke={isActive ? "url(#waveGradient)" : "oklch(0.88 0.01 60)"}
+                      strokeWidth={playing ? "3" : "2"}
+                      strokeLinecap="round"
+                      className="transition-all duration-75"
+                      style={{
+                        opacity: playing && intensity > 0.5 ? 1 : 0.6,
+                        filter: playing && intensity > 0.7 ? 'drop-shadow(0 0 4px oklch(0.70 0.18 25 / 0.6))' : 'none',
+                      }}
+                    />
+                  );
+                })}
+              </svg>
+              
+              <button
+                onClick={togglePlay}
+                disabled={!loaded}
+                className={`
+                  relative w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center
+                  transition-all duration-300 shadow-lg
+                  ${loaded
+                    ? "bg-primary hover:bg-accent hover:scale-105 active:scale-95"
+                    : "bg-muted cursor-not-allowed"
+                  }
+                `}
+                aria-label={playing ? "Pause" : "Play"}
+              >
+                {!loaded ? (
+                  <svg className="w-6 h-6 md:w-7 md:h-7 animate-spin text-primary-foreground" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                  </svg>
+                ) : playing ? (
+                  <svg className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16" rx="1"/>
+                    <rect x="14" y="4" width="4" height="16" rx="1"/>
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground ml-1" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5.14v14l11-7-11-7z"/>
+                  </svg>
+                )}
+              </button>
+            </div>
 
             <div className="flex-1 min-w-0">
               <p className="text-foreground font-semibold text-base md:text-lg truncate">
