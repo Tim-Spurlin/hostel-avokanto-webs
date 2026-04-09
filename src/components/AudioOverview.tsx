@@ -5,7 +5,7 @@ const TRACKS = {
   es: {
     label: "Español",
     flag: "🇺🇾",
-    url: "https://www.dropbox.com/scl/fi/bx4u0vwd43ozxfmx08005/Avokanto_el_refugio_humano_de_Montevideo.m4a?rlkey=qa5dd44fa776cqu0wicr4mus8&st=t7sjkbdf&raw=1",
+    url: "https://dl.dropboxusercontent.com/scl/fi/bx4u0vwd43ozxfmx08005/Avokanto_el_refugio_humano_de_Montevideo.m4a?rlkey=qa5dd44fa776cqu0wicr4mus8&st=t7sjkbdf&raw=1",
     title: "El refugio humano de Montevideo",
     subtitle: "Descubrí la historia y el alma de Avokanto",
     cta: "Escuchá nuestra historia",
@@ -13,7 +13,7 @@ const TRACKS = {
   en: {
     label: "English",
     flag: "🇬🇧",
-    url: "https://www.dropbox.com/scl/fi/1o56qu05xaljq7rsuq8le/Why_travelers_love_and_hate_Hostel_Avokanto.m4a?rlkey=hche05v19ta5i82ecm0kajp9x&st=dcdm9sqe&raw=1",
+    url: "https://dl.dropboxusercontent.com/scl/fi/1o56qu05xaljq7rsuq8le/Why_travelers_love_and_hate_Hostel_Avokanto.m4a?rlkey=hche05v19ta5i82ecm0kajp9x&st=dcdm9sqe&raw=1",
     title: "Why travelers love Avokanto",
     subtitle: "The honest story behind the hostel",
     cta: "Listen to our story",
@@ -250,8 +250,8 @@ export default function AudioOverview() {
 
         <div className="flex items-end justify-center gap-1 h-16 opacity-70">
           {frequencyData.map((intensity, i) => {
-            const baseHeight = 8;
-            const maxHeight = 56;
+            const baseHeight = 12;
+            const maxHeight = 80;
             const pulseHeight = playing 
               ? baseHeight + (intensity * (maxHeight - baseHeight))
               : baseHeight + (Math.sin(i * 0.5) * 8);
@@ -309,10 +309,10 @@ export default function AudioOverview() {
                   const totalBars = 48;
                   const angle = (i / totalBars) * 360;
                   const baseRadius = 70;
-                  const maxExtension = 25;
+                  const maxExtension = 45;
                   
                   const dataIndex = Math.floor((i / totalBars) * BAR_COUNT);
-                  const intensity = frequencyData[dataIndex] || 0;
+                  const intensity = Math.pow(frequencyData[dataIndex] || 0, 1.2); // make peaks sharper
                   
                   const extension = playing 
                     ? intensity * maxExtension
@@ -337,12 +337,12 @@ export default function AudioOverview() {
                       x2={x2}
                       y2={y2}
                       stroke={isActive ? "url(#waveGradient)" : "oklch(0.88 0.01 60)"}
-                      strokeWidth={playing ? "3" : "2"}
+                      strokeWidth={playing ? "4" : "2"}
                       strokeLinecap="round"
                       className="transition-all duration-75"
                       style={{
-                        opacity: playing && intensity > 0.5 ? 1 : 0.6,
-                        filter: playing && intensity > 0.7 ? 'drop-shadow(0 0 4px oklch(0.70 0.18 25 / 0.6))' : 'none',
+                        opacity: playing && intensity > 0.4 ? 1 : 0.6,
+                        filter: playing && intensity > 0.6 ? 'drop-shadow(0 0 6px oklch(0.70 0.18 25 / 0.8))' : 'none',
                       }}
                     />
                   );
@@ -458,6 +458,7 @@ export default function AudioOverview() {
       <audio
         ref={audioRef}
         src={track.url}
+        crossOrigin="anonymous"
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoaded}
         onEnded={handleEnded}
