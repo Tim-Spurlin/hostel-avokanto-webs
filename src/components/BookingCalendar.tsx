@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useKV } from "@github/spark/hooks"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -12,6 +12,7 @@ import { DateRange } from "react-day-picker"
 import { toast } from "sonner"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { t, formatCurrency } from "@/lib/i18n-new"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface RoomType {
   id: string
@@ -76,6 +77,7 @@ const ROOM_TYPES: RoomType[] = [
 
 export function BookingCalendar() {
   const { language, currency } = useLanguage()
+  const isMobile = useIsMobile()
   const [selectedRoom, setSelectedRoom] = useState<RoomType>(ROOM_TYPES[0])
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
   const [guestCount, setGuestCount] = useState(1)
@@ -155,26 +157,26 @@ export function BookingCalendar() {
   const nights = dateRange?.from && dateRange?.to ? differenceInDays(dateRange.to, dateRange.from) : 0
 
   return (
-    <section className="py-20 px-6 bg-background">
+    <section className="py-12 md:py-20 px-4 md:px-6 bg-background">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-semibold mb-4">{t('booking.title', language)}</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4">{t('booking.title', language)}</h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             {t('booking.subtitle', language)}
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
           <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                   <Bed size={24} weight="duotone" className="text-primary" />
                   {t('booking.selectRoom', language)}
                 </CardTitle>
@@ -185,11 +187,13 @@ export function BookingCalendar() {
                   const room = ROOM_TYPES.find(r => r.id === value)
                   if (room) setSelectedRoom(room)
                 }}>
-                  <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-6">
+                  <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-6 h-auto">
                     {ROOM_TYPES.map((room) => (
-                      <TabsTrigger key={room.id} value={room.id} className="text-xs sm:text-sm">
-                        {room.type === "private" ? <DoorOpen size={16} className="mr-1" /> : <Users size={16} className="mr-1" />}
-                        {room.name.split(" ")[0]} {room.type === "dorm" ? room.name.split(" ")[0] : ""}
+                      <TabsTrigger key={room.id} value={room.id} className="text-xs sm:text-sm py-2 px-1 sm:px-3">
+                        <span className="flex items-center gap-1">
+                          {room.type === "private" ? <DoorOpen size={16} className="hidden sm:inline" /> : <Users size={16} className="hidden sm:inline" />}
+                          <span className="truncate">{room.type === "private" ? "Private" : `${room.capacity}-Bed`}</span>
+                        </span>
                       </TabsTrigger>
                     ))}
                   </TabsList>
@@ -197,13 +201,13 @@ export function BookingCalendar() {
                   {ROOM_TYPES.map((room) => (
                     <TabsContent key={room.id} value={room.id}>
                       <div className="space-y-4">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h3 className="text-2xl font-semibold mb-2">{room.name}</h3>
-                            <p className="text-muted-foreground mb-4">{room.description}</p>
+                        <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <h3 className="text-xl md:text-2xl font-semibold mb-2">{room.name}</h3>
+                            <p className="text-sm md:text-base text-muted-foreground mb-4">{room.description}</p>
                           </div>
-                          <div className="text-right">
-                            <div className="text-3xl font-bold text-primary">{formatCurrency(room.price, currency)}</div>
+                          <div className="text-left sm:text-right w-full sm:w-auto">
+                            <div className="text-2xl md:text-3xl font-bold text-primary">{formatCurrency(room.price, currency)}</div>
                             <div className="text-sm text-muted-foreground">{t('perNight', language)}</div>
                           </div>
                         </div>
@@ -214,7 +218,7 @@ export function BookingCalendar() {
                             {t('booking.maxGuests', language, { count: room.capacity.toString() })}
                           </Badge>
                           {room.features.map((feature, idx) => (
-                            <Badge key={idx} variant="outline">{feature}</Badge>
+                            <Badge key={idx} variant="outline" className="text-xs">{feature}</Badge>
                           ))}
                         </div>
                       </div>
@@ -226,25 +230,27 @@ export function BookingCalendar() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                   <CalendarBlank size={24} weight="duotone" className="text-primary" />
                   {t('booking.selectDates', language)}
                 </CardTitle>
                 <CardDescription>{t('booking.selectDates.description', language)}</CardDescription>
               </CardHeader>
-              <CardContent>
-                <Calendar
-                  mode="range"
-                  selected={dateRange}
-                  onSelect={setDateRange}
-                  numberOfMonths={2}
-                  disabled={(date) => {
-                    const today = startOfDay(new Date())
-                    if (isBefore(date, today)) return true
-                    return isDateBooked(date, selectedRoom.id)
-                  }}
-                  className="rounded-md border w-full"
-                />
+              <CardContent className="overflow-x-auto">
+                <div className="min-w-0">
+                  <Calendar
+                    mode="range"
+                    selected={dateRange}
+                    onSelect={setDateRange}
+                    numberOfMonths={isMobile ? 1 : 2}
+                    disabled={(date) => {
+                      const today = startOfDay(new Date())
+                      if (isBefore(date, today)) return true
+                      return isDateBooked(date, selectedRoom.id)
+                    }}
+                    className="rounded-md border w-full mx-auto"
+                  />
+                </div>
                 
                 {dateRange?.from && dateRange?.to && (
                   <motion.div
@@ -254,11 +260,11 @@ export function BookingCalendar() {
                   >
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm font-medium">{t('booking.checkIn', language)}</span>
-                      <span className="text-sm">{format(dateRange.from, "MMMM d, yyyy")}</span>
+                      <span className="text-sm">{format(dateRange.from, "MMM d, yyyy")}</span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm font-medium">{t('booking.checkOut', language)}</span>
-                      <span className="text-sm">{format(dateRange.to, "MMMM d, yyyy")}</span>
+                      <span className="text-sm">{format(dateRange.to, "MMM d, yyyy")}</span>
                     </div>
                     <div className="flex justify-between items-center font-semibold">
                       <span className="text-sm">{t('booking.totalNights', language)}</span>
@@ -271,9 +277,9 @@ export function BookingCalendar() {
           </div>
 
           <div className="lg:col-span-1">
-            <Card className="sticky top-6">
+            <Card className="lg:sticky lg:top-6">
               <CardHeader>
-                <CardTitle>{t('booking.summary', language)}</CardTitle>
+                <CardTitle className="text-lg md:text-xl">{t('booking.summary', language)}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -285,7 +291,7 @@ export function BookingCalendar() {
                     type="text"
                     value={guestName}
                     onChange={(e) => setGuestName(e.target.value)}
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm md:text-base"
                     placeholder="John Doe"
                   />
                 </div>
@@ -299,7 +305,7 @@ export function BookingCalendar() {
                     type="email"
                     value={guestEmail}
                     onChange={(e) => setGuestEmail(e.target.value)}
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm md:text-base"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -315,7 +321,7 @@ export function BookingCalendar() {
                     max={selectedRoom.capacity}
                     value={guestCount}
                     onChange={(e) => setGuestCount(parseInt(e.target.value) || 1)}
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm md:text-base"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
                     {t('booking.maxGuests', language, { count: selectedRoom.capacity.toString() })}
@@ -325,7 +331,7 @@ export function BookingCalendar() {
                 <div className="pt-4 border-t space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">{t('booking.roomType', language)}</span>
-                    <span className="font-medium">{selectedRoom.name}</span>
+                    <span className="font-medium text-right text-xs sm:text-sm">{selectedRoom.name}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">{t('booking.rate', language)}</span>
@@ -368,9 +374,9 @@ export function BookingCalendar() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-12 p-6 bg-muted rounded-lg"
+          className="mt-8 md:mt-12 p-4 md:p-6 bg-muted rounded-lg"
         >
-          <h3 className="font-semibold text-lg mb-3">{t('booking.info.title', language)}</h3>
+          <h3 className="font-semibold text-base md:text-lg mb-3">{t('booking.info.title', language)}</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>• {t('booking.info.ventilation', language)}</li>
             <li>• {t('booking.info.bathrooms', language)}</li>
