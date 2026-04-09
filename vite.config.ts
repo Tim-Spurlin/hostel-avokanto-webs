@@ -22,4 +22,18 @@ export default defineConfig({
       '@': resolve(projectRoot, 'src')
     }
   },
+  build: {
+    assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.mp4')) {
+            return 'assets/video/[name]-[hash][extname]'
+          }
+          return 'assets/[name]-[hash][extname]'
+        }
+      }
+    }
+  },
+  assetsInclude: ['**/*.mp4'],
 });
