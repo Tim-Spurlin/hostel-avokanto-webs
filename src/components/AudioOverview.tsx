@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TRACKS = {
   es: {
@@ -22,7 +23,8 @@ const TRACKS = {
 type Lang = keyof typeof TRACKS;
 
 export default function AudioOverview() {
-  const [lang, setLang] = useState<Lang>("es");
+  const { language } = useLanguage();
+  const [lang, setLang] = useState<Lang>(language === "es" ? "es" : "en");
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -31,6 +33,10 @@ export default function AudioOverview() {
   const [loaded, setLoaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const track = TRACKS[lang];
+
+  useEffect(() => {
+    setLang(language === "es" ? "es" : "en");
+  }, [language]);
 
   useEffect(() => {
     setPlaying(false);
@@ -95,103 +101,141 @@ export default function AudioOverview() {
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden py-20 md:py-24">
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background:
-            "linear-gradient(135deg, #1a0e0a 0%, #2d1810 40%, #1e2d1a 100%)",
+          background: "linear-gradient(135deg, oklch(0.98 0.015 55) 0%, oklch(0.96 0.025 50) 50%, oklch(0.94 0.035 45) 100%)",
         }}
       />
+      
       <div
-        className="absolute inset-0 -z-10 opacity-20"
+        className="absolute inset-0 -z-10 opacity-30"
         style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-          backgroundSize: "200px",
+          backgroundImage: `
+            repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 35px,
+              oklch(0.70 0.18 25 / 0.08) 35px,
+              oklch(0.70 0.18 25 / 0.08) 70px
+            ),
+            repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 35px,
+              oklch(0.60 0.14 150 / 0.06) 35px,
+              oklch(0.60 0.14 150 / 0.06) 70px
+            ),
+            radial-gradient(
+              circle at 20% 30%,
+              oklch(0.70 0.18 25 / 0.15) 0%,
+              transparent 50%
+            ),
+            radial-gradient(
+              circle at 80% 70%,
+              oklch(0.55 0.12 200 / 0.12) 0%,
+              transparent 50%
+            )
+          `,
+          backgroundSize: "100% 100%, 100% 100%, 100% 100%, 100% 100%",
         }}
       />
 
-      <div className="max-w-2xl mx-auto px-6 py-14 flex flex-col items-center gap-6">
+      <div
+        className="absolute inset-0 -z-10 opacity-25"
+        style={{
+          backgroundImage: `
+            repeating-radial-gradient(
+              circle at 50% 50%,
+              transparent 0px,
+              oklch(0.65 0.15 35 / 0.08) 2px,
+              transparent 4px,
+              transparent 40px
+            )
+          `,
+        }}
+      />
 
-        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm">
-          <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold">
+      <div className="max-w-3xl mx-auto px-6 flex flex-col items-center gap-8">
+        <div className="flex items-center gap-2 px-5 py-2 rounded-full border-2 border-accent/30 bg-card shadow-md">
+          <span className="text-[11px] uppercase tracking-widest text-muted-foreground font-semibold">
             Audio Overview
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#e07b5a] animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
         </div>
 
-        <div className="text-center space-y-2">
-          <h2 className="text-3xl font-bold text-white leading-tight">
+        <div className="text-center space-y-3">
+          <h2 className="text-4xl md:text-5xl font-semibold text-foreground leading-tight">
             {track.title}
           </h2>
-          <p className="text-white/50 text-sm">{track.subtitle}</p>
+          <p className="text-muted-foreground text-base md:text-lg">{track.subtitle}</p>
         </div>
 
-        <div className="flex items-end gap-[3px] h-10 opacity-40">
-          {Array.from({ length: 32 }).map((_, i) => {
+        <div className="flex items-end gap-1 h-14 opacity-60">
+          {Array.from({ length: 40 }).map((_, i) => {
             const heights = [
-              6,10,18,28,22,14,30,20,8,16,26,34,24,12,20,30,
-              18,10,24,32,20,14,28,16,8,22,30,18,12,26,20,10,
+              8,12,20,32,28,18,36,24,10,20,30,40,28,16,24,36,
+              22,14,28,38,24,18,32,20,12,26,36,22,16,30,24,14,
+              10,18,26,34,20,12,28,16,
             ];
             const activeBar =
-              progress > 0 ? Math.floor((progress / 100) * 32) : -1;
+              progress > 0 ? Math.floor((progress / 100) * 40) : -1;
             return (
               <div
                 key={i}
-                className="w-1 rounded-full transition-colors duration-300"
+                className="w-1.5 rounded-full transition-all duration-300"
                 style={{
                   height: `${heights[i]}px`,
                   backgroundColor:
                     i <= activeBar
-                      ? "#e07b5a"
-                      : playing && Math.abs(i - activeBar) < 3
-                      ? "#f0a080"
-                      : "rgba(255,255,255,0.3)",
+                      ? "oklch(0.70 0.18 25)"
+                      : playing && Math.abs(i - activeBar) < 4
+                      ? "oklch(0.65 0.15 35)"
+                      : "oklch(0.60 0.14 150 / 0.4)",
                 }}
               />
             );
           })}
         </div>
 
-        <div className="w-full rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 p-5 space-y-4">
-
-          <div className="flex items-center gap-4">
+        <div className="w-full rounded-3xl bg-card border-2 border-border shadow-xl p-6 md:p-8 space-y-5 card-hover-effect">
+          <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
             <button
               onClick={togglePlay}
               disabled={!loaded}
               className={`
-                w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0
-                transition-all duration-200 shadow-lg
+                w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center flex-shrink-0
+                transition-all duration-300 shadow-lg
                 ${loaded
-                  ? "bg-[#e07b5a] hover:bg-[#c8614a] hover:scale-105 active:scale-95"
-                  : "bg-white/10 cursor-not-allowed"
+                  ? "bg-primary hover:bg-accent hover:scale-105 active:scale-95"
+                  : "bg-muted cursor-not-allowed"
                 }
               `}
               aria-label={playing ? "Pause" : "Play"}
             >
               {!loaded ? (
-                <svg className="w-5 h-5 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                <svg className="w-6 h-6 md:w-7 md:h-7 animate-spin text-primary-foreground" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
                 </svg>
               ) : playing ? (
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground" viewBox="0 0 24 24" fill="currentColor">
                   <rect x="6" y="4" width="4" height="16" rx="1"/>
                   <rect x="14" y="4" width="4" height="16" rx="1"/>
                 </svg>
               ) : (
-                <svg className="w-5 h-5 text-white ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground ml-1" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M8 5.14v14l11-7-11-7z"/>
                 </svg>
               )}
             </button>
 
             <div className="flex-1 min-w-0">
-              <p className="text-white font-semibold text-sm truncate">
+              <p className="text-foreground font-semibold text-base md:text-lg truncate">
                 {track.cta}
               </p>
-              <p className="text-white/40 text-xs mt-0.5">
+              <p className="text-muted-foreground text-sm md:text-base mt-1">
                 {loaded
                   ? `${fmt(currentTime)} / ${fmt(duration)}`
                   : "Loading audio…"}
@@ -201,12 +245,12 @@ export default function AudioOverview() {
             <div className="relative">
               <button
                 onClick={() => setShowDropdown((v) => !v)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-medium transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-secondary hover:bg-accent/10 border-2 border-border text-foreground text-sm font-medium transition-all hover:scale-105 active:scale-95 shadow-sm"
               >
-                <span>{track.flag}</span>
+                <span className="text-lg">{track.flag}</span>
                 <span>{track.label}</span>
                 <svg
-                  className={`w-3 h-3 transition-transform ${showDropdown ? "rotate-180" : ""}`}
+                  className={`w-4 h-4 transition-transform ${showDropdown ? "rotate-180" : ""}`}
                   viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
                 >
                   <path d="M6 9l6 6 6-6"/>
@@ -214,23 +258,23 @@ export default function AudioOverview() {
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-36 rounded-xl bg-[#1a0e0a] border border-white/15 shadow-2xl overflow-hidden z-50">
+                <div className="absolute right-0 top-full mt-2 w-44 rounded-2xl bg-card border-2 border-border shadow-2xl overflow-hidden z-50">
                   {(Object.keys(TRACKS) as Lang[]).map((l) => (
                     <button
                       key={l}
                       onClick={() => switchLang(l)}
                       className={`
-                        w-full flex items-center gap-2 px-4 py-2.5 text-sm transition-colors
+                        w-full flex items-center gap-3 px-5 py-3 text-sm transition-colors
                         ${lang === l
-                          ? "bg-[#e07b5a]/20 text-[#e07b5a] font-semibold"
-                          : "text-white/70 hover:bg-white/10 hover:text-white"
+                          ? "bg-accent/20 text-accent font-semibold"
+                          : "text-foreground hover:bg-muted"
                         }
                       `}
                     >
-                      <span>{TRACKS[l].flag}</span>
+                      <span className="text-lg">{TRACKS[l].flag}</span>
                       <span>{TRACKS[l].label}</span>
                       {lang === l && (
-                        <svg className="w-3 h-3 ml-auto" viewBox="0 0 24 24" fill="currentColor">
+                        <svg className="w-4 h-4 ml-auto" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
                         </svg>
                       )}
@@ -242,21 +286,21 @@ export default function AudioOverview() {
           </div>
 
           <div
-            className="relative h-1.5 rounded-full bg-white/10 cursor-pointer group"
+            className="relative h-2.5 rounded-full bg-muted cursor-pointer group overflow-hidden"
             onClick={handleSeek}
           >
             <div
-              className="h-full rounded-full bg-gradient-to-r from-[#e07b5a] to-[#f0a060] transition-all duration-100"
+              className="h-full rounded-full bg-gradient-to-r from-primary via-accent to-primary transition-all duration-100 shadow-sm"
               style={{ width: `${progress}%` }}
             />
             <div
-              className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ left: `calc(${progress}% - 6px)` }}
+              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-accent border-2 border-card shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ left: `calc(${progress}% - 8px)` }}
             />
           </div>
         </div>
 
-        <p className="text-white/30 text-xs text-center max-w-xs leading-relaxed">
+        <p className="text-muted-foreground text-sm md:text-base text-center max-w-lg leading-relaxed">
           🎙️ A personal audio guide to Avokanto — its history, philosophy, and why it exists in Parque Rodó.
         </p>
       </div>
