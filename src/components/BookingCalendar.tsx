@@ -236,8 +236,8 @@ export function BookingCalendar() {
                 </CardTitle>
                 <CardDescription>{t('booking.selectDates.description', language)}</CardDescription>
               </CardHeader>
-              <CardContent className="overflow-x-auto">
-                <div className="min-w-0">
+              <CardContent className="px-2 sm:px-6">
+                <div className="w-full flex justify-center">
                   <Calendar
                     mode="range"
                     selected={dateRange}
@@ -248,7 +248,7 @@ export function BookingCalendar() {
                       if (isBefore(date, today)) return true
                       return isDateBooked(date, selectedRoom.id)
                     }}
-                    className="rounded-md border w-full mx-auto"
+                    className="rounded-md border w-fit mx-auto"
                   />
                 </div>
                 
