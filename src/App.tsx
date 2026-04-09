@@ -3,6 +3,7 @@ import { ParallaxBackground } from "@/components/ParallaxBackground"
 import { BackgroundInteractor } from "@/components/BackgroundInteractor"
 import { Header } from "@/components/Header"
 import { Hero } from "@/components/Hero"
+import AudioOverview from "@/components/AudioOverview"
 import { Philosophy } from "@/components/Philosophy"
 import { Location } from "@/components/Location"
 import { Amenities } from "@/components/Amenities"
@@ -19,6 +20,7 @@ function App() {
       <div className="min-h-screen">
         <Header />
         <Hero />
+        <AudioOverview />
         <Philosophy />
         <Location />
         <Amenities />
