@@ -320,3 +320,19 @@ body::before {
 .pattern-pulse-hover:hover {
   animation: pattern-pulse 2s ease infinite;
 }
+
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .card-hover-effect:active {
+    transform: scale(0.98);
+  }
+  
+  .card-hover-effect:active::before {
+    opacity: 1;
+  }
+}
