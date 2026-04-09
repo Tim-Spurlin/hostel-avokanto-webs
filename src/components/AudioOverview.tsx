@@ -22,6 +22,8 @@ const TRACKS = {
 
 type Lang = keyof typeof TRACKS;
 
+const BAR_COUNT = 40;
+
 export default function AudioOverview() {
   const { language } = useLanguage();
   const [lang, setLang] = useState<Lang>(language === "es" ? "es" : "en");
@@ -32,7 +34,14 @@ export default function AudioOverview() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [frequencyData, setFrequencyData] = useState<number[]>(new Array(BAR_COUNT).fill(0));
+  
   const audioRef = useRef<HTMLAudioElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  
   const track = TRACKS[lang];
 
   useEffect(() => {
@@ -50,6 +59,70 @@ export default function AudioOverview() {
       audioRef.current.load();
     }
   }, [lang]);
+
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
+
+  const initializeAudioContext = () => {
+    if (!audioRef.current || audioContextRef.current) return;
+
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    audioContextRef.current = new AudioContext();
+    analyserRef.current = audioContextRef.current.createAnalyser();
+    analyserRef.current.fftSize = 128;
+    
+    sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
+    sourceRef.current.connect(analyserRef.current);
+    analyserRef.current.connect(audioContextRef.current.destination);
+  };
+
+  const analyzeAudio = () => {
+    if (!analyserRef.current || !playing) return;
+
+    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+    analyserRef.current.getByteFrequencyData(dataArray);
+
+    const step = Math.floor(dataArray.length / BAR_COUNT);
+    const newFrequencyData: number[] = [];
+    
+    for (let i = 0; i < BAR_COUNT; i++) {
+      const start = i * step;
+      let sum = 0;
+      for (let j = 0; j < step; j++) {
+        sum += dataArray[start + j];
+      }
+      const average = sum / step;
+      newFrequencyData.push(average / 255);
+    }
+
+    setFrequencyData(newFrequencyData);
+    animationFrameRef.current = requestAnimationFrame(analyzeAudio);
+  };
+
+  useEffect(() => {
+    if (playing) {
+      if (!audioContextRef.current) {
+        initializeAudioContext();
+      }
+      if (audioContextRef.current?.state === 'suspended') {
+        audioContextRef.current.resume();
+      }
+      analyzeAudio();
+    } else {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      setFrequencyData(new Array(BAR_COUNT).fill(0));
+    }
+  }, [playing]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -175,27 +248,33 @@ export default function AudioOverview() {
           <p className="text-muted-foreground text-base md:text-lg">{track.subtitle}</p>
         </div>
 
-        <div className="flex items-end gap-1 h-14 opacity-60">
-          {Array.from({ length: 40 }).map((_, i) => {
-            const heights = [
-              8,12,20,32,28,18,36,24,10,20,30,40,28,16,24,36,
-              22,14,28,38,24,18,32,20,12,26,36,22,16,30,24,14,
-              10,18,26,34,20,12,28,16,
-            ];
-            const activeBar =
-              progress > 0 ? Math.floor((progress / 100) * 40) : -1;
+        <div className="flex items-end justify-center gap-1 h-16 opacity-70">
+          {frequencyData.map((intensity, i) => {
+            const baseHeight = 8;
+            const maxHeight = 56;
+            const pulseHeight = playing 
+              ? baseHeight + (intensity * (maxHeight - baseHeight))
+              : baseHeight + (Math.sin(i * 0.5) * 8);
+            
+            const activeBar = progress > 0 ? Math.floor((progress / 100) * BAR_COUNT) : -1;
+            const isActive = i <= activeBar;
+            const isNearActive = playing && Math.abs(i - activeBar) < 5;
+            
             return (
               <div
                 key={i}
-                className="w-1.5 rounded-full transition-all duration-300"
+                className="w-1.5 rounded-full transition-all duration-75 ease-out"
                 style={{
-                  height: `${heights[i]}px`,
-                  backgroundColor:
-                    i <= activeBar
-                      ? "oklch(0.70 0.18 25)"
-                      : playing && Math.abs(i - activeBar) < 4
-                      ? "oklch(0.65 0.15 35)"
-                      : "oklch(0.60 0.14 150 / 0.4)",
+                  height: `${pulseHeight}px`,
+                  backgroundColor: isActive
+                    ? "oklch(0.70 0.18 25)"
+                    : isNearActive
+                    ? "oklch(0.65 0.15 35)"
+                    : "oklch(0.60 0.14 150 / 0.4)",
+                  transform: playing && intensity > 0.6 ? 'scaleY(1.1)' : 'scaleY(1)',
+                  boxShadow: playing && intensity > 0.7 
+                    ? '0 0 8px oklch(0.70 0.18 25 / 0.4)' 
+                    : 'none',
                 }}
               />
             );
