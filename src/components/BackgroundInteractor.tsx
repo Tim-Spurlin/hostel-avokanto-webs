@@ -18,9 +18,9 @@ export function BackgroundInteractor() {
       const target = e.target as HTMLElement
       if (
         target.tagName === 'BUTTON' ||
-        target.closest('button') ||
-        target.closest('.card-hover-effect') ||
-        target.closest('.pattern-ripple')
+        (target.closest && target.closest('button')) ||
+        (target.closest && target.closest('.card-hover-effect')) ||
+        (target.closest && target.closest('.pattern-ripple'))
       ) {
         activeRef.current = true
         document.body.classList.add('pattern-hover-active')
@@ -29,21 +29,21 @@ export function BackgroundInteractor() {
 
     const handleMouseLeave = (e: MouseEvent) => {
       const target = e.target as HTMLElement
-      const relatedTarget = e.relatedTarget as HTMLElement
+      const relatedTarget = e.relatedTarget as HTMLElement | null
       
       if (
         target.tagName === 'BUTTON' ||
-        target.closest('button') ||
-        target.closest('.card-hover-effect') ||
-        target.closest('.pattern-ripple')
+        (target.closest && target.closest('button')) ||
+        (target.closest && target.closest('.card-hover-effect')) ||
+        (target.closest && target.closest('.pattern-ripple'))
       ) {
         if (
           !relatedTarget ||
           (
             relatedTarget.tagName !== 'BUTTON' &&
-            !relatedTarget.closest('button') &&
-            !relatedTarget.closest('.card-hover-effect') &&
-            !relatedTarget.closest('.pattern-ripple')
+            (!relatedTarget.closest || !relatedTarget.closest('button')) &&
+            (!relatedTarget.closest || !relatedTarget.closest('.card-hover-effect')) &&
+            (!relatedTarget.closest || !relatedTarget.closest('.pattern-ripple'))
           )
         ) {
           activeRef.current = false
