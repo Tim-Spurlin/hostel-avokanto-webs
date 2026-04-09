@@ -288,10 +288,17 @@ export default function AudioOverview() {
         >
           <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
             <div className="relative flex-shrink-0">
-              <svg
+              <div
                 className="absolute inset-0 w-28 h-28 md:w-36 md:h-36 -translate-x-6 -translate-y-6 md:-translate-x-8 md:-translate-y-8"
-                viewBox="0 0 200 200"
+                style={{
+                  transform: playing ? `translate(-1.5rem, -1.5rem) rotate(${(currentTime * 30) % 360}deg)` : 'translate(-1.5rem, -1.5rem) rotate(0deg)',
+                  transition: playing ? 'none' : 'transform 0.5s ease-out',
+                }}
               >
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 200 200"
+                >
                 <defs>
                   <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="oklch(0.70 0.18 25)" stopOpacity="0.8" />
@@ -342,6 +349,7 @@ export default function AudioOverview() {
                   );
                 })}
               </svg>
+              </div>
               
               <button
                 onClick={togglePlay}
