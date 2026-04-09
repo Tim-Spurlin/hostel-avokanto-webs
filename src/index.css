@@ -336,3 +336,19 @@ body::before {
     opacity: 1;
   }
 }
+
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .card-hover-effect:active {
+    transform: scale(0.98);
+  }
+  
+  .card-hover-effect:active::before {
+    opacity: 1;
+  }
+}
