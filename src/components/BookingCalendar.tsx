@@ -236,22 +236,20 @@ export function BookingCalendar() {
                 </CardTitle>
                 <CardDescription>{t('booking.selectDates.description', language)}</CardDescription>
               </CardHeader>
-              <CardContent className="px-2 sm:px-4 md:px-6">
-                <div className="w-full overflow-x-auto">
-                  <div className="min-w-[280px] max-w-full mx-auto">
-                    <Calendar
-                      mode="range"
-                      selected={dateRange}
-                      onSelect={setDateRange}
-                      numberOfMonths={isMobile ? 1 : 2}
-                      disabled={(date) => {
-                        const today = startOfDay(new Date())
-                        if (isBefore(date, today)) return true
-                        return isDateBooked(date, selectedRoom.id)
-                      }}
-                      className="rounded-md border bg-card shadow-sm mx-auto"
-                    />
-                  </div>
+              <CardContent className="px-4 md:px-6">
+                <div className="w-full">
+                  <Calendar
+                    mode="range"
+                    selected={dateRange}
+                    onSelect={setDateRange}
+                    numberOfMonths={isMobile ? 1 : 2}
+                    disabled={(date) => {
+                      const today = startOfDay(new Date())
+                      if (isBefore(date, today)) return true
+                      return isDateBooked(date, selectedRoom.id)
+                    }}
+                    className="rounded-md border bg-card shadow-sm mx-auto w-full"
+                  />
                 </div>
                 
                 {dateRange?.from && dateRange?.to && (
