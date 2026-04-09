@@ -16,7 +16,7 @@
 }
 
 :root {
-  --background: oklch(0.98 0.01 60);
+  --background: oklch(0.96 0.015 55);
   --foreground: oklch(0.25 0 0);
 
   --card: oklch(1 0 0);
@@ -50,7 +50,11 @@
 }
 
 body {
-  background: oklch(0.98 0.01 60);
+  background: linear-gradient(
+    180deg,
+    oklch(0.97 0.02 50) 0%,
+    oklch(0.95 0.025 45) 100%
+  );
   position: relative;
   overflow-x: hidden;
 }
@@ -91,60 +95,61 @@ body::after {
   bottom: 0;
   background-image: 
     repeating-conic-gradient(
-      from 0deg at 50% 50%,
-      oklch(0.98 0.01 60) 0deg,
-      oklch(0.92 0.04 35 / 0.25) 2deg,
-      oklch(0.98 0.01 60) 4deg
+      from 45deg at 25% 25%,
+      oklch(0.70 0.18 25 / 0.15) 0deg,
+      transparent 30deg,
+      oklch(0.60 0.14 150 / 0.12) 60deg,
+      transparent 90deg
     ),
     repeating-linear-gradient(
       135deg,
       transparent,
-      transparent 2px,
-      oklch(0.90 0.05 40 / 0.15) 2px,
-      oklch(0.90 0.05 40 / 0.15) 3px
+      transparent 8px,
+      oklch(0.65 0.15 35 / 0.25) 8px,
+      oklch(0.65 0.15 35 / 0.25) 10px
     ),
     repeating-linear-gradient(
       45deg,
       transparent,
-      transparent 40px,
-      oklch(0.70 0.18 25 / 0.08) 40px,
-      oklch(0.70 0.18 25 / 0.08) 42px,
-      transparent 42px,
-      transparent 80px
+      transparent 60px,
+      oklch(0.70 0.18 25 / 0.18) 60px,
+      oklch(0.70 0.18 25 / 0.18) 64px,
+      transparent 64px,
+      transparent 120px
     ),
     repeating-radial-gradient(
       circle at 50% 50%,
       transparent 0px,
-      oklch(0.93 0.03 50 / 0.20) 1px,
-      transparent 2px,
-      transparent 40px
+      oklch(0.55 0.12 200 / 0.15) 2px,
+      transparent 4px,
+      transparent 60px
     ),
     radial-gradient(
-      ellipse at 15% 30%,
-      oklch(0.70 0.18 25 / 0.12) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      ellipse at 85% 70%,
-      oklch(0.60 0.14 150 / 0.10) 0%,
-      transparent 45%
-    ),
-    radial-gradient(
-      ellipse at 50% 90%,
-      oklch(0.55 0.12 200 / 0.08) 0%,
+      ellipse at 20% 20%,
+      oklch(0.70 0.18 25 / 0.20) 0%,
       transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 60%,
+      oklch(0.60 0.14 150 / 0.18) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 50% 85%,
+      oklch(0.55 0.12 200 / 0.15) 0%,
+      transparent 60%
     ),
     linear-gradient(
       180deg,
-      oklch(0.99 0.005 55) 0%,
-      oklch(0.97 0.02 50) 50%,
-      oklch(0.95 0.03 45) 100%
+      oklch(0.97 0.015 50) 0%,
+      oklch(0.95 0.025 45) 50%,
+      oklch(0.93 0.035 40) 100%
     );
   background-size: 
-    200px 200px,
-    3px 3px,
-    80px 80px,
-    40px 40px,
+    300px 300px,
+    10px 10px,
+    120px 120px,
+    60px 60px,
     100% 100%,
     100% 100%,
     100% 100%,
@@ -174,20 +179,20 @@ body::before {
     repeating-linear-gradient(
       90deg,
       transparent,
-      transparent 1px,
-      oklch(0.90 0.04 40 / 0.08) 1px,
-      oklch(0.90 0.04 40 / 0.08) 2px,
       transparent 2px,
-      transparent 100px
+      oklch(0.65 0.15 35 / 0.12) 2px,
+      oklch(0.65 0.15 35 / 0.12) 3px,
+      transparent 3px,
+      transparent 80px
     ),
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 1px,
-      oklch(0.90 0.04 40 / 0.08) 1px,
-      oklch(0.90 0.04 40 / 0.08) 2px,
       transparent 2px,
-      transparent 100px
+      oklch(0.65 0.15 35 / 0.12) 2px,
+      oklch(0.65 0.15 35 / 0.12) 3px,
+      transparent 3px,
+      transparent 80px
     );
   background-position: 0 var(--parallax-grid), 0 var(--parallax-grid);
   pointer-events: none;
