@@ -31,6 +31,7 @@ export default function AudioOverview() {
   const [currentTime, setCurrentTime] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const track = TRACKS[lang];
 
@@ -110,7 +111,7 @@ export default function AudioOverview() {
       />
       
       <div
-        className="absolute inset-0 -z-10 opacity-30"
+        className="absolute inset-0 -z-10 opacity-30 transition-all duration-700 ease-out"
         style={{
           backgroundImage: `
             repeating-linear-gradient(
@@ -139,11 +140,12 @@ export default function AudioOverview() {
             )
           `,
           backgroundSize: "100% 100%, 100% 100%, 100% 100%, 100% 100%",
+          backgroundPosition: isHovering ? '10px -10px, -10px 10px, 0 0, 0 0' : '0 0, 0 0, 0 0, 0 0',
         }}
       />
 
       <div
-        className="absolute inset-0 -z-10 opacity-25"
+        className="absolute inset-0 -z-10 opacity-25 transition-all duration-500 ease-out"
         style={{
           backgroundImage: `
             repeating-radial-gradient(
@@ -154,6 +156,7 @@ export default function AudioOverview() {
               transparent 40px
             )
           `,
+          transform: isHovering ? 'scale(1.02)' : 'scale(1)',
         }}
       />
 
@@ -199,7 +202,11 @@ export default function AudioOverview() {
           })}
         </div>
 
-        <div className="w-full rounded-3xl bg-card border-2 border-border shadow-xl p-6 md:p-8 space-y-5 card-hover-effect">
+        <div 
+          className="w-full rounded-3xl bg-card border-2 border-border shadow-xl p-6 md:p-8 space-y-5 card-hover-effect"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
           <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
             <button
               onClick={togglePlay}
