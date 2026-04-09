@@ -3,6 +3,7 @@ import { Heart, Users, CookingPot } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { t } from "@/lib/i18n-new"
+import diningVideo from "@/assets/video/grok-video-6dd4813e-c21b-4df0-b189-4caa82691fb7_1775677438.mp4"
 
 export function Philosophy() {
   const { language } = useLanguage()
@@ -59,9 +60,35 @@ export function Philosophy() {
         </div>
 
         <motion.div 
-          className="bg-primary/10 border border-primary/20 rounded-xl p-8 md:p-12 text-center"
+          className="mb-16"
           {...fadeInUp}
           transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <video 
+              src={diningVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent pointer-events-none" />
+          </div>
+          <div className="text-center mt-6">
+            <h3 className="text-2xl md:text-3xl font-semibold mb-3 text-foreground">
+              {t('philosophy.dining.title', language)}
+            </h3>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              {t('philosophy.dining.description', language)}
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="bg-primary/10 border border-primary/20 rounded-xl p-8 md:p-12 text-center"
+          {...fadeInUp}
+          transition={{ delay: 0.5, duration: 0.6 }}
         >
           <p className="text-lg md:text-xl italic text-foreground leading-relaxed max-w-4xl mx-auto">
             {t('philosophy.quote', language)}
