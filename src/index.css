@@ -47,37 +47,111 @@
 body {
   background: oklch(0.98 0.01 60);
   background-image: 
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      oklch(0.98 0.01 60) 0deg,
+      oklch(0.96 0.015 50 / 0.15) 2deg,
+      oklch(0.98 0.01 60) 4deg
+    ),
+    repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 2px,
+      oklch(0.95 0.02 40 / 0.08) 2px,
+      oklch(0.95 0.02 40 / 0.08) 3px
+    ),
     repeating-linear-gradient(
       45deg,
       transparent,
-      transparent 35px,
-      oklch(0.96 0.015 50 / 0.3) 35px,
-      oklch(0.96 0.015 50 / 0.3) 70px
+      transparent 40px,
+      oklch(0.70 0.18 25 / 0.02) 40px,
+      oklch(0.70 0.18 25 / 0.02) 41px,
+      transparent 41px,
+      transparent 80px
+    ),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0px,
+      oklch(0.96 0.015 50 / 0.12) 1px,
+      transparent 2px,
+      transparent 40px
+    ),
+    radial-gradient(
+      ellipse at 15% 30%,
+      oklch(0.70 0.18 25 / 0.06) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 85% 70%,
+      oklch(0.60 0.14 150 / 0.05) 0%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 50% 90%,
+      oklch(0.55 0.12 200 / 0.04) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      180deg,
+      oklch(0.99 0.005 55) 0%,
+      oklch(0.98 0.01 60) 50%,
+      oklch(0.97 0.015 50) 100%
+    );
+  background-size: 
+    200px 200px,
+    3px 3px,
+    80px 80px,
+    40px 40px,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  background-position:
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    0 0;
+  background-attachment: fixed;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      oklch(0.94 0.02 45 / 0.03) 1px,
+      oklch(0.94 0.02 45 / 0.03) 2px,
+      transparent 2px,
+      transparent 100px
     ),
     repeating-linear-gradient(
-      -45deg,
+      0deg,
       transparent,
-      transparent 35px,
-      oklch(0.97 0.012 55 / 0.2) 35px,
-      oklch(0.97 0.012 55 / 0.2) 70px
-    ),
-    radial-gradient(
-      circle at 20% 50%,
-      oklch(0.70 0.18 25 / 0.04) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 80%,
-      oklch(0.60 0.14 150 / 0.04) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 40% 20%,
-      oklch(0.55 0.12 200 / 0.03) 0%,
-      transparent 50%
+      transparent 1px,
+      oklch(0.94 0.02 45 / 0.03) 1px,
+      oklch(0.94 0.02 45 / 0.03) 2px,
+      transparent 2px,
+      transparent 100px
     );
-  background-size: 70px 70px, 70px 70px, 100% 100%, 100% 100%, 100% 100%;
-  background-attachment: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 @theme {
