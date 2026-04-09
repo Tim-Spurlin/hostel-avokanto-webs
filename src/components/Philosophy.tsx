@@ -3,7 +3,7 @@ import { Heart, Users, CookingPot } from "@phosphor-icons/react"
 import { motion } from "framer-motion"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { t } from "@/lib/i18n-new"
-import diningVideo from "@/assets/video/grok-video-6dd4813e-c21b-4df0-b189-4caa82691fb7_1775677438.mp4"
+import diningVideo from "@/assets/video/grok-video-e05499ca-a20a-4e6d-ba34-86011fd9b768.mp4"
 
 export function Philosophy() {
   const { language } = useLanguage()
