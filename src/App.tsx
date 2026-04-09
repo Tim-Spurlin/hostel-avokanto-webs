@@ -1,4 +1,5 @@
 import { LanguageProvider } from "@/contexts/LanguageContext"
+import { ParallaxBackground } from "@/components/ParallaxBackground"
 import { Header } from "@/components/Header"
 import { Hero } from "@/components/Hero"
 import { Philosophy } from "@/components/Philosophy"
@@ -12,6 +13,7 @@ import { Footer } from "@/components/Footer"
 function App() {
   return (
     <LanguageProvider>
+      <ParallaxBackground />
       <div className="min-h-screen">
         <Header />
         <Hero />

@@ -42,10 +42,53 @@
   --radius: 0.75rem;
   
   --garden-green: oklch(0.60 0.14 150);
+  
+  --parallax-slow: 0px;
+  --parallax-medium: 0px;
+  --parallax-fast: 0px;
+  --parallax-grid: 0px;
 }
 
 body {
   background: oklch(0.98 0.01 60);
+  position: relative;
+  overflow-x: hidden;
+}
+
+@keyframes parallax-slow {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -200px;
+  }
+}
+
+@keyframes parallax-medium {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -100px;
+  }
+}
+
+@keyframes parallax-fast {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -50px;
+  }
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-image: 
     repeating-conic-gradient(
       from 0deg at 50% 50%,
@@ -107,16 +150,17 @@ body {
     100% 100%,
     100% 100%;
   background-position:
-    0 0,
-    0 0,
-    0 0,
-    0 0,
+    0 var(--parallax-slow),
+    0 var(--parallax-fast),
+    0 var(--parallax-medium),
+    0 var(--parallax-fast),
     0 0,
     0 0,
     0 0,
     0 0;
-  background-attachment: fixed;
-  position: relative;
+  pointer-events: none;
+  z-index: 0;
+  will-change: background-position;
 }
 
 body::before {
@@ -145,13 +189,15 @@ body::before {
       transparent 2px,
       transparent 100px
     );
+  background-position: 0 var(--parallax-grid), 0 var(--parallax-grid);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
+  will-change: background-position;
 }
 
 #root {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 @theme {
